@@ -2,7 +2,6 @@
 
 import React, {useEffect, useState, CSSProperties} from "react"
 import {useLocation} from "react-router-dom"
-import logo from "../images/logo.svg"
 import Loader from "../components/Loader"
 import Gateway from "../components/Gateway"
 import "../styles/App.css"
@@ -71,28 +70,6 @@ function App() {
         if (!isValidGatewayData) {
             return (
                 <>
-                    <section>
-                        <h4 style={{textAlign: "left"}}>1111Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>2222Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>3Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>4Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>5Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>1Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>2Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>3Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>4Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>5Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>1Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>2Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>3Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>4Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>5Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>1Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>2Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>3Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>4Please Double Check Your Information</h4>
-                        <h4 style={{textAlign: "left"}}>5Please Double Check Your Information</h4>
-                    </section>
                     <div className="App">
                         <div className="container">
                             <div className="row">
@@ -103,8 +80,14 @@ function App() {
                                     Please Select Your Preferred Payment Method. Currently Selected:{" "}
                                 </h4>
                                 <div style={gatewayCardCssProperties}>
-                      <Gateway />
-
+                                    <Gateway />
+                                    <Gateway />
+                                    <Gateway />
+                                    <Gateway />
+                                    <Gateway />
+                                    <Gateway />
+                                    <Gateway />
+                                    <Gateway />
                                 </div>
                             </div>
                         </div>
