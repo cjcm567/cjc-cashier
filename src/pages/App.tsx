@@ -36,6 +36,22 @@ function App() {
             gatewayName: "gateway 2",
             gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
         },
+        {
+            gatewayName: "gateway 1",
+            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
+        },
+        {
+            gatewayName: "gateway 2",
+            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
+        },
+        {
+            gatewayName: "gateway 1",
+            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
+        },
+        {
+            gatewayName: "gateway 2",
+            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
+        },
     ]
 
     const gatewayCardCssProperties: CSSProperties = {
@@ -49,7 +65,6 @@ function App() {
     const infoCardCssProperties: CSSProperties = {
         padding: "20px",
         margin: "10px",
-        // minWidth: "10em",
         backgroundColor: "#fff",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)",
     }
@@ -90,6 +105,7 @@ function App() {
 
     const [clickedGateway, setClickedGateway] = useState(gatewayDict)
     const [selectedGateway, setSelectedGateway] = useState(-1)
+    const [submitStatus, setSubmitStatus] = useState("Submit")
 
     const handleClick = (id: number) => {
         if (id !== 0) {
@@ -98,8 +114,10 @@ function App() {
         } else {
             gatewayDict[0].style = "skill-card clicked"
         }
-        setClickedGateway(gatewayDict)
-        setSelectedGateway(id)
+        if (id !== -1) {
+            setClickedGateway(gatewayDict)
+            setSelectedGateway(id)
+        }
     }
 
     async function handleSubmit(gatewayIndex: number) {
@@ -114,6 +132,10 @@ function App() {
             })
             const data = await res.text()
             console.log(data)
+            setSelectedGateway(-1)
+            Object.values(gatewayDict).forEach(v => (v.style = "skill-card disabled"))
+            setClickedGateway(gatewayDict)
+            setSubmitStatus("Submitted")
         }
     }
 
@@ -128,7 +150,7 @@ function App() {
     ))
 
     if (!isValidQueryParams) {
-        return <p>NOTFOUND</p>
+        return <h1>MALFORMED REQUEST</h1>
     } else {
         if (isValidGatewayData) {
             return (
@@ -153,25 +175,41 @@ function App() {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <h4 style={{textAlign: "left"}}>Please Select Your Preferred Payment Method.</h4>
+                                    {submitStatus === "Submit" ? (
+                                        <h4 style={{textAlign: "left"}}>
+                                            Please Select Your Preferred Payment Method.
+                                        </h4>
+                                    ) : (
+                                        <h4 style={{textAlign: "left"}}>Your deposit request has been submitted.</h4>
+                                    )}
                                 </div>
                                 <div className="row">
                                     {selectedGateway === -1 ? (
-                                        <h4 style={{textAlign: "left", color: "red"}}>
-                                            Please select at least one payment method
-                                        </h4>
+                                        <></>
                                     ) : (
                                         <h4 style={{textAlign: "left"}}>
                                             Currently Selected: {gatewayDict[selectedGateway].gatewayName}
                                         </h4>
                                     )}
                                 </div>
-                                <Suspense fallback={<Loader />}>
-                                    <div style={gatewayCardCssProperties}>{gatewayRender}</div>
-                                </Suspense>
+                                {submitStatus === "Submit" ? (
+                                    <Suspense fallback={<Loader />}>
+                                        <div style={gatewayCardCssProperties}>{gatewayRender}</div>
+                                    </Suspense>
+                                ) : (
+                                    <></>
+                                )}
+
                                 <div className="row" style={{marginTop: "4vh", marginBottom: "4vh"}}>
-                                    <button className={selectedGateway === -1 ? "confirm-button disabled" : "confirm-button"} onClick={() => handleSubmit(selectedGateway)} >
-                                        Confirm
+                                    <button
+                                        className={
+                                            selectedGateway === -1 ? "confirm-button disabled" : "confirm-button"
+                                        }
+                                        onClick={() => {
+                                            handleSubmit(selectedGateway)
+                                            setSelectedGateway(-1)
+                                        }}>
+                                        {submitStatus}
                                     </button>
                                 </div>
                             </div>

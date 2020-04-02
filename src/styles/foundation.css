@@ -129,7 +129,8 @@ code {
 }
 
 .confirm-button.disabled {
-    background: #424346;
+    filter: grayscale(100%);
+    cursor: not-allowed;
 }
 
 .confirm-button:hover {
@@ -141,7 +142,9 @@ code {
 }
 .confirm-button:active, .confirm-button:focus {
     background: #2962FF;
+    cursor: wait;
 }
 .confirm-button.disabled:active, .confirm-button.disabled:focus {
-    background: #424242;
+    filter: grayscale(100%);
+    cursor: not-allowed;
 }
