@@ -1,3 +1,5 @@
+/** @format */
+
 * {
     box-sizing: border-box;
 }
@@ -16,7 +18,7 @@ body {
         "Droid Sans", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #EEE;
+    background-color: #eee;
     overflow-x: hidden;
     overflow-y: visible;
     display: flex;
@@ -108,13 +110,38 @@ code {
     }
 }
 
-.row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-    padding-left: 15px;
-    padding-right: 15px;
+.confirm-button {
+    padding: 15px 35px;
+    font-size: 0.8rem;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #fff;
+    background: #448aff;
+    border: 0;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+    -webkit-transition: all 200ms ease-in-out;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.confirm-button.disabled {
+    background: #424346;
+}
+
+.confirm-button:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.confirm-button.disabled:hover {
+    box-shadow: none;
+}
+.confirm-button:active, .confirm-button:focus {
+    background: #2962FF;
+}
+.confirm-button.disabled:active, .confirm-button.disabled:focus {
+    background: #424242;
 }

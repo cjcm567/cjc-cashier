@@ -3,19 +3,24 @@
 import React from "react"
 import "../styles/Gateway.css"
 
-export default function Gateway() {
+interface Props {
+    gatewayName: string
+    gatewayImgUri: string
+    clickedStyle: string
+}
+
+export default function Gateway(props: Props) {
+    const {gatewayName, gatewayImgUri, clickedStyle} = props
     return (
         <>
-            <div className="skill-card">
+            <div className={clickedStyle}>
                 <header className="skill-card__header">
-                    <img
-                        className="skill-card__icon"
-                        src="https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg"
-                        alt="HTML5 Logo"
-                    />
+                    <img className="skill-card__icon" src={gatewayImgUri} alt="HTML5 Logo" />
                 </header>
                 <div className="skill-card__body">
-                    <h2 className="skill-card__title" style={{color: "#000000"}}>Gateway</h2>
+                    <h2 className="skill-card__title" style={{color: "#000000"}}>
+                        {gatewayName}
+                    </h2>
                 </div>
             </div>
         </>

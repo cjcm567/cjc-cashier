@@ -11,9 +11,6 @@ import "react-app-polyfill/stable"
 import * as serviceWorker from "./serviceWorker"
 
 ReactDOM.render(
-    // <React.StrictMode>
-    //     <App />
-    // </React.StrictMode>,
     <Router>
         <Switch>
             <Route path="/" exact component={Home} />
