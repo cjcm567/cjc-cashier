@@ -61,7 +61,7 @@ function App() {
         requestHeaders.set("Content-Type", "application/json")
         requestHeaders.set("Access-Control-Allow-Origin", "true")
         async function fetchData() {
-            const res = await fetch("process.env.REACT_APP_API_PUBLIC_URL", {
+            const res = await fetch("process.env.REACT_APP_GATEWAY_LIST", {
                 method: "POST",
                 headers: requestHeaders,
                 body: JSON.stringify({
@@ -107,7 +107,7 @@ function App() {
             const requestHeaders: HeadersInit = new Headers()
             requestHeaders.set("Content-Type", "application/json")
             requestHeaders.set("Access-Control-Allow-Origin", "true")
-            const res = await fetch("process.env.REACT_APP_API_PUBLIC_URL", {
+            const res = await fetch("process.env.REACT_APP_GATEWAY_DEPOSIT_URL", {
                 method: "POST",
                 headers: requestHeaders,
                 body: JSON.stringify({...queryParams, gatewayName: gatewayDict[gatewayIndex].gatewayName}),
