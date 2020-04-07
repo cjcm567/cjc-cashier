@@ -13,46 +13,17 @@ function useQuery() {
 function App() {
     const query = useQuery()
     const sessionId = query.get("sessionId") || ""
-    const orderId = query.get("orderId") || ""
-    const userId = query.get("userId") || ""
-    const userName = query.get("userName") || ""
+    const walletId = query.get("walletId") || ""
     const orderAmount = query.get("orderAmount") || ""
     const orderCurrency = query.get("orderCurrency") || ""
     const queryParams = {
         sessionId: sessionId,
-        orderId: orderId,
-        userId: userId,
-        userName: userName,
+        walletId: walletId,
         orderAmount: orderAmount,
         orderCurrency: orderCurrency,
     }
 
-    const initalGatewayData = [
-        {
-            gatewayName: "gateway 1",
-            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
-        },
-        {
-            gatewayName: "gateway 2",
-            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
-        },
-        {
-            gatewayName: "gateway 1",
-            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
-        },
-        {
-            gatewayName: "gateway 2",
-            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
-        },
-        {
-            gatewayName: "gateway 1",
-            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
-        },
-        {
-            gatewayName: "gateway 2",
-            gatewayImgUri: "https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg",
-        },
-    ]
+    const initalGatewayData = [{gatewayName: "", gatewayImgUri: ""}]
 
     const gatewayCardCssProperties: CSSProperties = {
         display: "flex",
@@ -71,26 +42,29 @@ function App() {
 
     const [gatewayData, setGatewayData] = useState(initalGatewayData)
 
+    
+
+    const isValidQueryParams = !Object.values(queryParams).some(x => x === "")
+    const isValidGatewayData = !Object.values(gatewayData[0]).some(x => x === "")
+    console.log("isValidGatewayData: " + isValidGatewayData)
+
     useEffect(() => {
-        const requestHeaders: HeadersInit = new Headers()
-        requestHeaders.set("Content-Type", "application/json")
-        requestHeaders.set("Access-Control-Allow-Origin", "true")
+        
+        // const requestHeaders = new Headers()
+        // requestHeaders.set("Accept", "text/plain")
+        // requestHeaders.set("Content-Type", "text/plain")
+        // requestHeaders.set("Access-Control-Allow-Origin", "*")
         async function fetchData() {
-            const res = await fetch("process.env.REACT_APP_GATEWAY_LIST", {
+            const requestOptions = {
                 method: "POST",
-                headers: requestHeaders,
-                body: JSON.stringify({
-                    orderCurrency: orderCurrency,
-                }),
-            })
+                body: JSON.stringify({orderCurrency: orderCurrency}),
+            }
+            const res = await fetch("https://oetcashier.azurewebsites.net/api/OetCashierNudge", requestOptions)
             const data = await res.json()
             setGatewayData(data)
         }
         fetchData()
     }, [orderCurrency])
-
-    const isValidQueryParams = !Object.values(queryParams).some(x => x === "")
-    const isValidGatewayData = !Object.values(gatewayData[0]).some(x => x === "")
 
     let gatewayDict: {gatewayIndex: number; gatewayName: string; gatewayImgUri: string; style: string}[] = []
 
@@ -122,24 +96,39 @@ function App() {
 
     async function handleSubmit(gatewayIndex: number) {
         if (gatewayIndex !== -1) {
-            const requestHeaders: HeadersInit = new Headers()
-            requestHeaders.set("Content-Type", "application/json")
-            requestHeaders.set("Access-Control-Allow-Origin", "true")
-            const res = await fetch("process.env.REACT_APP_GATEWAY_DEPOSIT_URL", {
+            const res = await fetch("https://oetcashier.azurewebsites.net/api/OetCashierTrigger", {
                 method: "POST",
-                headers: requestHeaders,
                 body: JSON.stringify({...queryParams, gatewayName: gatewayDict[gatewayIndex].gatewayName}),
             })
-            const data = await res.text()
-            console.log(data)
+            const data = await res.json()
+            let cashierUrl = ""
+            cashierUrl = data.cashway.toString()
             setSelectedGateway(-1)
             Object.values(gatewayDict).forEach(v => (v.style = "skill-card disabled"))
             setClickedGateway(gatewayDict)
             setSubmitStatus("Submitted")
+            const body = JSON.stringify({...queryParams, gatewayName: gatewayDict[gatewayIndex].gatewayName})
+            console.log(body)
+            if (cashierUrl !== "" || cashierUrl !== undefined) {
+                window.open(cashierUrl, "_self")
+            }
         }
     }
 
-    let gatewayRender = clickedGateway.map(gateway => (
+    useEffect(() => {
+        async function fetchData() {
+            const requestOptions = {
+                method: "POST",
+                body: JSON.stringify({orderCurrency: orderCurrency}),
+            }
+            const res = await fetch("https://oetcashier.azurewebsites.net/api/OetCashierNudge", requestOptions)
+            const data = await res.json()
+            setGatewayData(data)
+        }
+        fetchData()
+    }, [orderCurrency])
+
+    let gatewayRender = gatewayDict.map(gateway => (
         <div onClick={() => handleClick(gateway.gatewayIndex)} key={gateway.gatewayIndex}>
             <Gateway
                 gatewayName={gateway.gatewayName}
@@ -152,7 +141,7 @@ function App() {
     if (!isValidQueryParams) {
         return <h1>MALFORMED REQUEST</h1>
     } else {
-        if (isValidGatewayData) {
+        if (!isValidGatewayData) {
             return (
                 <>
                     <div style={infoCardCssProperties}>
@@ -162,9 +151,6 @@ function App() {
                                     <h4 style={{textAlign: "left"}}>Please Double Check Your Information</h4>
                                     <div style={infoCardCssProperties}>
                                         <div style={{textAlign: "left"}}>
-                                            <p>
-                                                User Name: <b>{queryParams.userName}</b>
-                                            </p>
                                             <p>
                                                 Amount: <b>{queryParams.orderAmount}</b>
                                             </p>
@@ -183,6 +169,14 @@ function App() {
                                         <h4 style={{textAlign: "left"}}>Your deposit request has been submitted.</h4>
                                     )}
                                 </div>
+
+                                {submitStatus === "Submit" ? (
+                                    <Suspense fallback={<Loader />}>
+                                        <div style={gatewayCardCssProperties}>{gatewayRender}</div>
+                                    </Suspense>
+                                ) : (
+                                    <></>
+                                )}
                                 <div className="row">
                                     {selectedGateway === -1 ? (
                                         <></>
@@ -192,14 +186,6 @@ function App() {
                                         </h4>
                                     )}
                                 </div>
-                                {submitStatus === "Submit" ? (
-                                    <Suspense fallback={<Loader />}>
-                                        <div style={gatewayCardCssProperties}>{gatewayRender}</div>
-                                    </Suspense>
-                                ) : (
-                                    <></>
-                                )}
-
                                 <div className="row" style={{marginTop: "4vh", marginBottom: "4vh"}}>
                                     <button
                                         className={

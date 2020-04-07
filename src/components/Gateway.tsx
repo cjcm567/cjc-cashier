@@ -15,7 +15,7 @@ export default function Gateway(props: Props) {
         <>
             <div className={clickedStyle}>
                 <header className="skill-card__header">
-                    <img className="skill-card__icon" src={gatewayImgUri} alt="HTML5 Logo" />
+                    <img className="skill-card__icon" src={gatewayImgUri} alt="" />
                 </header>
                 <div className="skill-card__body">
                     <h2 className="skill-card__title" style={{color: "#000000"}}>
