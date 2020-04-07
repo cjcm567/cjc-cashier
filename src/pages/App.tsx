@@ -77,7 +77,7 @@ function App() {
         })
     }
 
-    const [clickedGateway, setClickedGateway] = useState(gatewayDict)
+    // const [clickedGateway, setClickedGateway] = useState(gatewayDict)
     const [selectedGateway, setSelectedGateway] = useState(-1)
     const [submitStatus, setSubmitStatus] = useState("Submit")
 
@@ -89,7 +89,7 @@ function App() {
             gatewayDict[0].style = "skill-card clicked"
         }
         if (id !== -1) {
-            setClickedGateway(gatewayDict)
+            // setClickedGateway(gatewayDict)
             setSelectedGateway(id)
         }
     }
@@ -105,7 +105,7 @@ function App() {
             cashierUrl = data.cashway.toString()
             setSelectedGateway(-1)
             Object.values(gatewayDict).forEach(v => (v.style = "skill-card disabled"))
-            setClickedGateway(gatewayDict)
+            // setClickedGateway(gatewayDict)
             setSubmitStatus("Submitted")
             const body = JSON.stringify({...queryParams, gatewayName: gatewayDict[gatewayIndex].gatewayName})
             console.log(body)
