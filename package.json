@@ -1,6 +1,6 @@
 {
-  "name": "cjc-cashier-console",
-  "version": "0.1.0",
+  "name": "cjc-cashier",
+  "version": "0.1.4",
   "private": true,
   "dependencies": {
     "dotenv": "^8.2.0",
