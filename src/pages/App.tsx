@@ -13,11 +13,13 @@ function useQuery() {
 function App() {
     const query = useQuery()
     const sessionId = query.get("sessionId") || ""
+    const userId = query.get("userId") || ""
     const walletId = query.get("walletId") || ""
     const orderAmount = query.get("orderAmount") || ""
     const orderCurrency = query.get("orderCurrency") || ""
     const queryParams = {
         sessionId: sessionId,
+        userId: userId,
         walletId: walletId,
         orderAmount: orderAmount,
         orderCurrency: orderCurrency,
