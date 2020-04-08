@@ -46,7 +46,6 @@ function App() {
 
     const isValidQueryParams = !Object.values(queryParams).some(x => x === "")
     const isValidGatewayData = !Object.values(gatewayData[0]).some(x => x === "")
-    console.log("isValidGatewayData: " + isValidGatewayData)
 
     useEffect(() => {
         
@@ -103,12 +102,12 @@ function App() {
             const data = await res.json()
             let cashierUrl = ""
             cashierUrl = data.cashway.toString()
+            console.table(data)
+            console.log("cashway" + cashierUrl)
             setSelectedGateway(-1)
             Object.values(gatewayDict).forEach(v => (v.style = "skill-card disabled"))
             // setClickedGateway(gatewayDict)
             setSubmitStatus("Submitted")
-            const body = JSON.stringify({...queryParams, gatewayName: gatewayDict[gatewayIndex].gatewayName})
-            console.log(body)
             if (cashierUrl !== "" || cashierUrl !== undefined) {
                 window.open(cashierUrl, "_self")
             }
